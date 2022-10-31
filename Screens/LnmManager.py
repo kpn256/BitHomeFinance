@@ -26,32 +26,24 @@ class LnManager(tk.Frame):
 
 
 #----------------------------VARIABLES FUNTION------------------------ 
-
         
+        user = Tr(
+                key="tJlOA0pSR8PRTZksov3iqGhRbqaYktS4F5tbYK+dDQ8=",
+                secret="I6d2pLEZln+yGHPXZzlGvN5XFCxsnDRQnllikA4JNTADPNct/3zMr7nLFJ593YUzCuKAsqfKZCXWGAkJrHdQ9w==",
+                passphrase="9d0hb89h1e4e6")
 
-        user = Tr(key="BYoKkl/ReP+kTRU58VSbEd7Y2ZuwLCAq89I3uQ0J4gE=",
-                secret="h7cGSt+5W8qtLI409nlMpN05OdyzS937x4iQSAtQoM5doRulneaOupDj4oDa5ss4WtpuPHEEBbmW7ff/YJ3+ZQ==",
-                passphrase="bec5c0ah945f")
         '''key = tk.StringVar()
         secret = tk.StringVar()
         passphrase = tk.StringVar()'''
 
         info_position = tk.StringVar()
+
         def log():
-
-
             user.login()
             user.show_status()
-            return info_position.set(user.show_running_p())
+            return info_position.set(user.show_open_p())
 
-            
-
-
-            
 #---------------------------LogIn Widget-------------------------------------        
-        
-
-            
     
         apikL = tk.Label(self,
                 text="Api Key",
@@ -115,12 +107,6 @@ class LnManager(tk.Frame):
             pady=1,
         )
 
-            
-        
-
-               
-
-  
 #---------------------------buttoms labels -----------------------           
 
 
@@ -140,8 +126,6 @@ class LnManager(tk.Frame):
             padx = 0.8,
             pady = 1,
         )
-       
-
 
 #________________________back button        
 
@@ -160,4 +144,3 @@ class LnManager(tk.Frame):
                 padx=1,
                 pady=1,
             )
-            

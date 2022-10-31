@@ -1,10 +1,8 @@
 
 from curses.ascii import isdigit
 import json
-from re import I
 from lnmarkets import rest 
 #from lnmarkets import websockets
-
 
 
 class User(rest.LNMarketsRest):
@@ -178,34 +176,44 @@ class Trading(User):
     def close_all(self):
         closeP = self.lnm.futures_close_all_positions()
         return closeP
-        
+
     def show_open_p(self):
         
         open_p = self.lnm.futures_get_positions({
                 'type': 'open'
                 })
         info_open = json.loads(open_p)
+        result=[]
+        counter = 0
         for i in info_open:
-            result = print(f"Position ID: {i['pid']}\n margin: {i['margin']}\nPL:{i['pl']}\n liquidation {i['liquidation']}")
-        return result, info_open
+            position = []
+            counter += 1
+            position.append(f"posicion {counter}")
+            position.append(f"position id: {i['pid']}")
+            position.append(f"price: {i['price']}")
+            position.append(f"margin: {i['margin']}")
+            position.append(f"liquidation: {i['liquidation']}")
+            result.append(position)
+        return result
              
     def show_running_p(self):
         running_p = self.lnm.futures_get_positions({
                 'type': 'running'
                 }) 
         info_running = json.loads(running_p) 
+        result=[]
+        counter = 0
         for i in info_running:
-            print(f"Position ID: {i['pid']}\n",
-                f"margin: {i['margin']}\n",
-                f"PL:{i['pl']}\n",
-                f"liquidation{i['liquidation']}",
-            )
+            position = []
+            counter += 1
+            position.append(f"posicion {counter}")
+            position.append(f"position id: {i['pid']}")
+            position.append(f"price: {i['price']}")
+            position.append(f"margin: {i['margin']}")
+            position.append(f"liquidation: {i['liquidation']}")
+            result.append(position)
+        return result
 
-
-
-            '''rinfo= f"RUNING POSITION:\n position id: {i['pid']}\nfside: {i['side']}\n margin: {i['margin']}\nprice: {i['price']}\n leverage: {i['leverage']}\n liquidation: {i['liquidation']}"
-        return print(type(infoRunning))'''
-        
     def response(self,peticion):
 
         info  = json.loads(peticion)
@@ -240,9 +248,9 @@ class Trading(User):
 
 
 user1 = Trading(
-    key="BYoKkl/ReP+kTRU58VSbEd7Y2ZuwLCAq89I3uQ0J4gE=",
-    secret="h7cGSt+5W8qtLI409nlMpN05OdyzS937x4iQSAtQoM5doRulneaOupDj4oDa5ss4WtpuPHEEBbmW7ff/YJ3+ZQ==",
-    passphrase="bec5c0ah945f")
+    key="tJlOA0pSR8PRTZksov3iqGhRbqaYktS4F5tbYK+dDQ8=",
+    secret="I6d2pLEZln+yGHPXZzlGvN5XFCxsnDRQnllikA4JNTADPNct/3zMr7nLFJ593YUzCuKAsqfKZCXWGAkJrHdQ9w==",
+    passphrase="9d0hb89h1e4e6")
 
 
 
