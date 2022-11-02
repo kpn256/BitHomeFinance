@@ -1,33 +1,32 @@
 
 from curses.ascii import isdigit
 import json
-from lnmarkets import rest 
-#from lnmarkets import websockets
+from lnmarkets import rest
+# from lnmarkets import websockets
 
 
 class User(rest.LNMarketsRest):
 
-    def __init__(self,key,secret,passphrase):
+    def __init__(self, key, secret, passphrase):
         super().app_configuration
-       
-        self.key = key 
+
+        self.key = key
         self.secret = secret
         self.passphrase = passphrase
 
-        self.options = {'key': f'{self.key}',
+        self.options = {
+                'key': f'{self.key}',
                 'secret': f'{self.secret}',
                 'passphrase': f'{self.passphrase}'
                 }
 
-        self.status=False 
-        
+        self.status = False
+
         self.lnm = rest.LNMarketsRest(**self.options)
         self.lnm.futures_get_ticker()
 
-      
-        
     def login(self):
-        
+
         self.status = True
 
     def logout(self):
@@ -41,8 +40,8 @@ class User(rest.LNMarketsRest):
             return "user online"
         else:
             return "user offline"
-    
-     
+
+
 class Trading(User):
 
     def __init__(self, key, secret, passphrase):
@@ -51,10 +50,9 @@ class Trading(User):
         self.margin = 500
         self.leverage = 50
         self.entryPrice = ""
-        
-        
-    def long(self,type,margin,leverage,entry_price):
-        
+
+    def long(self, type, margin, leverage, entry_price):
+
         if type == "m":
             peticion = self.lnm.futures_new_position({
                 'type': type,
@@ -62,10 +60,10 @@ class Trading(User):
                 'margin': margin,
                 'leverage': leverage,
             })
-            self.response(peticion) 
-                
+            self.response(peticion)
+
         elif type == 'l':
-            
+
             peticion = self.lnm.futures_new_position({
                 'type': type,
                 'side': 'b',
@@ -74,8 +72,8 @@ class Trading(User):
                 'price': entry_price,
             })
             self.response(peticion)
-    
-    def long_tp_sl(self,type,margin,leverage,sl,tp):
+
+    def long_tp_sl(self, type, margin, leverage, sl, tp):
         peticion = self.lnm.futures_new_position({
             'type': type,
             'side': 'b',
@@ -86,7 +84,7 @@ class Trading(User):
         })
         self.response(peticion)
 
-    def long_sl(self,type,margin,leverage,sl):
+    def long_sl(self, type, margin, leverage, sl):
 
         peticion = self.lnm.futures_new_position({
             'type': type,
@@ -97,18 +95,18 @@ class Trading(User):
         })
         self.response(peticion)
 
-    def long_tp(self,type,margin,leverage,tp):
+    def long_tp(self, type, margin, leverage, tp):
 
         peticion = self.lnm.futures_new_position({
             'type': type,
             'side': 'b',
             'margin': margin,
             'leverage': leverage,
-            'takeprofit' : int(tp),
+            'takeprofit': int(tp),
         })
         self.response(peticion)
 
-    def Short(self,type,margin,leverage,entry_price):
+    def Short(self, type, margin, leverage, entry_price):
         if type == 'm':
             peticion = self.lnm.futures_new_position({
                     'type': type,
@@ -117,7 +115,7 @@ class Trading(User):
                     'leverage': leverage,
                     })
             self.response(peticion)
-    
+
         elif type == 'l':
             entry_price = int(input("set the limit price: "))
             peticion = self.lnm.futures_new_position({
@@ -129,7 +127,7 @@ class Trading(User):
                     })
             self.response(peticion)
 
-    def Short_tp_sl(self,type,margin,leverage,sl,tp):
+    def Short_tp_sl(self, type, margin, leverage, sl, tp):
 
         if sl == isdigit and tp == isdigit:
             peticion = self.lnm.futures_new_position({
@@ -158,7 +156,7 @@ class Trading(User):
                 'side': 's',
                 'margin': margin,
                 'leverage': leverage,
-                'takeprofit' : int(tp),
+                'takeprofit': int(tp),
             })
             self.response(peticion)
 
@@ -178,45 +176,55 @@ class Trading(User):
         return closeP
 
     def show_open_p(self):
-        
+
         open_p = self.lnm.futures_get_positions({
                 'type': 'open'
                 })
         info_open = json.loads(open_p)
-        result=[]
+        result = []
         counter = 0
         for i in info_open:
             position = []
             counter += 1
             position.append(f"posicion {counter}")
-            position.append(f"position id: {i['pid']}")
             position.append(f"price: {i['price']}")
             position.append(f"margin: {i['margin']}")
             position.append(f"liquidation: {i['liquidation']}")
             result.append(position)
-        return result
-             
+
+        position_list = result
+        string = str(position_list)
+        characters = "[]'"
+        for x in range(len(characters)):
+            string = string.replace(characters[x], "")
+        return string
+
     def show_running_p(self):
         running_p = self.lnm.futures_get_positions({
                 'type': 'running'
-                }) 
-        info_running = json.loads(running_p) 
-        result=[]
+                })
+        info_running = json.loads(running_p)
+        result = []
         counter = 0
         for i in info_running:
             position = []
             counter += 1
             position.append(f"posicion {counter}")
-            position.append(f"position id: {i['pid']}")
             position.append(f"price: {i['price']}")
             position.append(f"margin: {i['margin']}")
             position.append(f"liquidation: {i['liquidation']}")
             result.append(position)
-        return result
 
-    def response(self,peticion):
+        position_list = result
+        string = str(position_list)
+        characters = "[]'"
+        for x in range(len(characters)):
+            string = string.replace(characters[x], "")
+        return string
 
-        info  = json.loads(peticion)
+    def response(self, peticion):
+
+        info = json.loads(peticion)
         position_info = info["position"]
         pid = position_info["pid"]
         liquidation = position_info["liquidation"]
@@ -224,9 +232,10 @@ class Trading(User):
         leverage = position_info["leverage"]
         take_p = position_info['takeprofit']
         stop_l = position_info['stoploss']
-        p_info = print(f"position ID: {pid}\n liquidation: {liquidation}\n" 
-                    f"entry price: {price}\n stoploss: {stop_l}\n takeprofit: {take_p}")
-        return p_info,pid,liquidation,price,leverage,stop_l,take_p
+        p_info = print(
+                f"position ID: {pid}\n liquidation: {liquidation}\n"
+                f"entry price: {price}\n stoploss: {stop_l}\n takeprofit: {take_p}")
+        return p_info, pid, liquidation, price, leverage, stop_l, take_p
 
     def price_btc(self):
 
@@ -243,7 +252,7 @@ class Trading(User):
         index = price_index1["index"]
         bid = bid_offer1["bid"]
         offer = bid_offer1["offer"]
-    
+
         return f"index:{str(index)} bid:{str(bid)} offer:{str(offer)}"
 
 
@@ -252,16 +261,11 @@ user1 = Trading(
     secret="I6d2pLEZln+yGHPXZzlGvN5XFCxsnDRQnllikA4JNTADPNct/3zMr7nLFJ593YUzCuKAsqfKZCXWGAkJrHdQ9w==",
     passphrase="9d0hb89h1e4e6")
 
-
-
 user1.login()
-#print(user1.key)
+# print(user1.key)
 print(user1.show_open_p())
-#print(user1.showop())
-#print(user1.long("m",500,50,""))
-#print(user1.longtPsL("m",500,30,20000,23000))
-#print(user1.priceBtc())
-#print(user1.price_btc())
-
-
-
+# print(user1.showop())
+# print(user1.long("m",500,50,""))
+# print(user1.longtPsL("m",500,30,20000,23000))
+# print(user1.priceBtc())
+# print(user1.price_btc())
