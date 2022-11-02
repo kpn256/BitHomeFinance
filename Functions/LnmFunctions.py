@@ -191,10 +191,10 @@ class Trading(User):
             position.append(f"margin: {i['margin']}")
             position.append(f"liquidation: {i['liquidation']}")
             result.append(position)
+            del position
 
-        position_list = result
-        string = str(position_list)
-        characters = "[]'"
+        string = str(result)
+        characters = "[]',"
         for x in range(len(characters)):
             string = string.replace(characters[x], "")
         return string
@@ -209,17 +209,18 @@ class Trading(User):
         for i in info_running:
             position = []
             counter += 1
-            position.append(f"posicion {counter}")
+            position.append(f"\nposicion {counter}")
             position.append(f"price: {i['price']}")
             position.append(f"margin: {i['margin']}")
             position.append(f"liquidation: {i['liquidation']}")
             result.append(position)
+            del position
 
-        position_list = result
-        string = str(position_list)
+        string = str(result)
         characters = "[]'"
         for x in range(len(characters)):
             string = string.replace(characters[x], "")
+
         return string
 
     def response(self, peticion):
@@ -256,6 +257,7 @@ class Trading(User):
         return f"index:{str(index)} bid:{str(bid)} offer:{str(offer)}"
 
 
+'''
 user1 = Trading(
     key="tJlOA0pSR8PRTZksov3iqGhRbqaYktS4F5tbYK+dDQ8=",
     secret="I6d2pLEZln+yGHPXZzlGvN5XFCxsnDRQnllikA4JNTADPNct/3zMr7nLFJ593YUzCuKAsqfKZCXWGAkJrHdQ9w==",
@@ -263,9 +265,9 @@ user1 = Trading(
 
 user1.login()
 # print(user1.key)
-print(user1.show_open_p())
+# print(user1.show_open_p())
 # print(user1.showop())
 # print(user1.long("m",500,50,""))
 # print(user1.longtPsL("m",500,30,20000,23000))
 # print(user1.priceBtc())
-# print(user1.price_btc())
+# print(user1.price_btc())'''
