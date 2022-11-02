@@ -24,7 +24,6 @@ class LnManager(tk.Frame):
 
     def InitWidget(self):
 # ----------------------------VARIABLES FUNTION------------------------
-
         user = Tr(
                 key="tJlOA0pSR8PRTZksov3iqGhRbqaYktS4F5tbYK+dDQ8=",
                 secret="I6d2pLEZln+yGHPXZzlGvN5XFCxsnDRQnllikA4JNTADPNct/3zMr7nLFJ593YUzCuKAsqfKZCXWGAkJrHdQ9w==",
@@ -116,7 +115,7 @@ class LnManager(tk.Frame):
 
 # ___________________________tittle and subtittle______________________
 
-        tk.Label(
+        tk.label(
             self,
             text="LNM Trading",
             textvariable=info_position,
