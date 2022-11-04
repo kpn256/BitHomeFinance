@@ -159,7 +159,7 @@ class Trading(User):
                 'takeprofit': int(tp),
             })
             self.response(peticion)
-# pendiente por desarollar esta funcion
+
 
     def close_run_p(self, pid ):
     
@@ -186,7 +186,6 @@ class Trading(User):
             response.append(items)
         return response
 
-# ----------------------------------------------------------------------
 
     def close_all(self):
         closeP = self.lnm.futures_close_all_positions()
@@ -293,5 +292,4 @@ user = Trading(
 # print(user1.long_tp_sl("m", 500, 30, 20000, 23000))
 # print(user1.priceBtc())
 # print(user1.price_btc())'''
-# print(user.close_run_p(pid='32273a06-a329-4bcd-aca7-22b6ea39e7c4'))
-print(user.show_open_p())
+# print(user.show_open_p())
