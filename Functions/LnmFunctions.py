@@ -161,16 +161,31 @@ class Trading(User):
             self.response(peticion)
 # pendiente por desarollar esta funcion
 
-    def close_run_p(self):
-        pid = input("paste your position id: ")
-        close = self.lnm.futures_cancel_position({
-            'pid': f'{pid}'
+    def close_run_p(self, pid ):
+    
+        close = self.lnm.futures_close_position({
+            'pid': pid,
             })
-        return close
+        peticion = json.loads(close)
+        response = []
+        for items in peticion.items():
+            response.append(items)
+            
+            
+        return response
+        
 
-    def close_limit_P(self):
-        cancelP = self.lnm.futures_cancel_all_positions()()
-        print(cancelP)
+    def close_limit_P(self, pid):
+        
+        cancel_p = self.lnm.futures_cancel_position({
+            'pid': pid,
+        })()
+        peticion = json.loads(cancel_p)
+        response = []
+        for items in peticion.items():
+            response.append(items)
+        return response
+
 # ----------------------------------------------------------------------
 
     def close_all(self):
@@ -189,6 +204,7 @@ class Trading(User):
             position = []
             counter += 1
             position.append(f"posicion {counter}")
+            position.append(f"pid: {i['pid']}")
             position.append(f"price: {i['price']}")
             position.append(f"margin: {i['margin']}")
             position.append(f"liquidation: {i['liquidation']}")
@@ -212,6 +228,7 @@ class Trading(User):
             position = []
             counter += 1
             position.append(f"\nposicion {counter}")
+            position.append(f"pid: {i['pid']}")
             position.append(f"price: {i['price']}")
             position.append(f"margin: {i['margin']}")
             position.append(f"liquidation: {i['liquidation']}")
@@ -237,12 +254,13 @@ class Trading(User):
         stop_l = position_info['stoploss']
         p_info = (
                 f"position ID: {pid}\n"
+                f"pid: {pid}\n"
                 f"liquidation: {liquidation}\n"
                 f"entry price: {price}\n"
                 f"stoploss: {stop_l}\n"
                 f"takeprofit: {take_p}"
                 f"leverage: {leverage}")
-        return print(peticion)
+        return p_info
 
     def price_btc(self):
 
@@ -263,10 +281,17 @@ class Trading(User):
         return f"index:{str(index)} bid:{str(bid)} offer:{str(offer)}"
 
 
+user = Trading(
+                key="tJlOA0pSR8PRTZksov3iqGhRbqaYktS4F5tbYK+dDQ8=",
+                secret="I6d2pLEZln+yGHPXZzlGvN5XFCxsnDRQnllikA4JNTADPNct/3zMr7nLFJ593YUzCuKAsqfKZCXWGAkJrHdQ9w==",
+                passphrase="9d0hb89h1e4e6")
+
 # print(user1.key)
 # print(user1.show_open_p())
-# print(user1.show_running_p())
+# print(user.show_running_p())
 # print(user1.long("m",500,50,""))
 # print(user1.long_tp_sl("m", 500, 30, 20000, 23000))
 # print(user1.priceBtc())
 # print(user1.price_btc())'''
+# print(user.close_run_p(pid='32273a06-a329-4bcd-aca7-22b6ea39e7c4'))
+print(user.show_open_p())
