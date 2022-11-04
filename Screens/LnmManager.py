@@ -115,7 +115,7 @@ class LnManager(tk.Frame):
 
 # ___________________________tittle and subtittle______________________
 
-        tk.label(
+        tk.Label(
             self,
             text="LNM Trading",
             textvariable=info_position,
